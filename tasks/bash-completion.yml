@@ -1,0 +1,8 @@
+---
+
+- name: add helm bash completion for all users
+  shell: "helm completion bash > /tmp/helm.bash_completion"
+
+- name: add helm bash completion for all users
+  become: yes
+  shell: "mv /tmp/helm.bash_completion /etc/bash_completion.d/helm"

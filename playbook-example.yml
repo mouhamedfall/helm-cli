@@ -1,0 +1,10 @@
+---
+
+# Use it as: ansible-playbook -i localhost -b playbook-example.yml
+
+- name: install helm
+  hosts: localhost
+  roles:
+    - helm-cli
+
+

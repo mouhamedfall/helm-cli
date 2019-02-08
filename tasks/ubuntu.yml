@@ -1,0 +1,44 @@
+---
+# tasks file for helm-cli on ubuntu linux
+
+- name: ensure snap command is installed
+  become: yes
+  apt:
+    state: present
+    name: snapd
+
+- name: install kubectl via snap
+  command: "snap install --classic kubectl"
+
+- name: install helm via snap
+  become: yes
+  command: "snap install --classic helm"
+
+- name: link to /usr/bin/helm
+  become: yes
+  file:
+    src: /snap/bin/helm
+    dest: /usr/bin/helm
+    state: link
+
+- name: fix helm snap bug config - ensure kube user folder exists
+  file:
+    dest: ~/.kube
+    state: directory
+
+- name: fix helm snap bug config - ensure kubectl config file exists
+  file:
+    dest: ~/.kube/config
+    state: touch
+
+# See https://github.com/snapcrafters/helm/issues/10
+- name: fix helm snap bug config - ensure user snap directory exists
+  file:
+    dest: ~/snap/helm/common/kube/
+    state: directory
+
+- name: fix helm snap bug config - link kubectl config file
+  file:
+    src: ~/.kube/config
+    dest: ~/snap/helm/common/kube/config
+    state: link
